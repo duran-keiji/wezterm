@@ -16,15 +16,22 @@ local OPACITY = 0.85
 local BLUR = 18
 
 -- ====================================================
--- Font (警告が出にくい/確実に描けるフォールバック)
+-- Font (英語・日本語両方を見やすく)
 -- ====================================================
 config.font = wezterm.font_with_fallback({
+  -- 英語・コード用: 等幅フォント（Nerd Fontでアイコンも綺麗）
   { family = "JetBrainsMono Nerd Font" },
-  -- Nerd Font 系が入っているならここが拾われ、アイコンが綺麗に出ます
   { family = "Symbols Nerd Font Mono" },
+  -- 日本語用: ヒラギノ角ゴシック（macOS標準、読みやすい）
+  { family = "Hiragino Kaku Gothic Pro" },
+  { family = "Hiragino Sans" },
+  -- フォールバック: その他の日本語フォント
+  { family = "Noto Sans CJK JP" },
+  { family = "Yu Gothic Medium" },
+  -- 絵文字用
   { family = "Noto Color Emoji" },
 })
-config.font_size = 12.0
+config.font_size = 16.0
 config.line_height = 1.12
 config.use_ime = true
 
@@ -314,7 +321,7 @@ config.cursor_blink_rate = 650
 local SOLID_LEFT_ARROW = "◀"
 local SOLID_RIGHT_ARROW = "▶"
 
-wezterm.on("format-tab-title", function(tab, tabs, panes, cfg, hover, max_width)
+wezterm.on("format-tab-title", function(tab, _, _, _, hover, max_width)
   local background = "rgba(6,19,12,0.85)"
   local foreground = "#7dffb8"
   local edge_background = "rgba(0,0,0,0)"
@@ -403,7 +410,7 @@ end)
 -- --------------------------------------------------
 -- 起動時イベント
 -- --------------------------------------------------
-wezterm.on("gui-startup", function(cmd)
+wezterm.on("gui-startup", function()
   -- 起動コマンド側で描画して、Enter 後に通常のシェルへ移行する。
   local logo_zeus_path = wezterm.config_dir .. "/assets/zeus.txt"
   local logo_wez_path = wezterm.config_dir .. "/assets/wezterm_logo.txt"
@@ -602,7 +609,6 @@ exec "${SHELL:-zsh}" -l
 
   -- 起動時にフルスクリーンへ（デザインは変えず、ウィンドウ状態だけ変更）
   -- 環境/バージョン差分があるので複数手段で試す
-  wezterm.on("window-config-reloaded", function(_) end) -- no-op: event loop を確実に回す
   wezterm.time.call_after(0.1, function()
     local gui = window:gui_window()
     if gui and gui.toggle_fullscreen then

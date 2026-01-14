@@ -57,7 +57,7 @@ Leader は **`Ctrl+Q`** です（`timeout_milliseconds = 2000`）。
 
 ## WezTermで Markdown を “レンダリング表示” したい
 
-WezTerm 自体は Markdown を HTML のようにレンダリングする機能を持ちません。  
+WezTerm 自体は Markdown を HTML のようにレンダリングする機能を持ちません。
 その代わり、**表示に使うコマンド**を Markdown 対応にします。
 
 ## WezTermで「左で編集 / 右でリアルタイムプレビュー」したい
